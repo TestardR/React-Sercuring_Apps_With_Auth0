@@ -14,4 +14,8 @@ export default class Auth {
       scope: 'openid profile email' // when a user signs in, they'll be presented with a consent screen so they can consent to us using this data
     });
   }
+
+  login = () => {
+    this.auth0.authorize(); // This will redirect the browser to the Auth0 login page
+  };
 }
