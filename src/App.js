@@ -24,7 +24,6 @@ class App extends Component {
           />
           <Route
             path="/callback"
-            exact
             render={props => <Callback auth={this.auth} {...props} />}
           />
           {/*We pass the auth object down to each component on props for now.*/}

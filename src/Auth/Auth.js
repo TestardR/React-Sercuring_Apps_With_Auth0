@@ -18,4 +18,29 @@ export default class Auth {
   login = () => {
     this.auth0.authorize(); // This will redirect the browser to the Auth0 login page
   };
+
+  handleAuthentication = () => {
+    // get the data from the URL, parse it to get individual pieces
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        // we write the data to our session
+        this.setSession(authResult);
+        this.history.push('/');
+      } else if (err) {
+        this.history.push('/');
+        alert(`Error: ${err.error}. Check the console for further details.`);
+        console.log(err);
+      }
+    });
+  };
+  setSession = authResult => {
+    // set the time that the access token will exprire
+    // Unix epoch time, we need 1. authResult.expiresIn contains expiration in seconds, 2. * by 1000 to convert in to millisec, 3. Add current Unix epoch time
+    const expiresAt = JSON.stringify(
+      authResult.expiresIn * 1000 + new Date().getTime()
+    );
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('expires_at', expiresAt);
+  };
 }
