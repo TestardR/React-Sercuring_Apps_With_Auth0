@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import Home from './Home';
 import Profile from './Profile';
 import Nav from './Nav';
@@ -27,7 +27,16 @@ class App extends Component {
             render={props => <Callback auth={this.auth} {...props} />}
           />
           {/*We pass the auth object down to each component on props for now.*/}
-          <Route path="/profile" component={Profile} />
+          <Route
+            path="/profile"
+            render={props =>
+              this.props.isAuthenticated ? (
+                <Profile auth={this.auth} {...props} />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
         </div>
       </>
     );
