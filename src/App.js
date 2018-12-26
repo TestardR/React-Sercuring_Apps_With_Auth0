@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <>
         {/*<React.Fragment />*/}
-        <Nav />
+        <Nav auth={this.auth} />
         <div className="body">
           <Route
             path="/"
