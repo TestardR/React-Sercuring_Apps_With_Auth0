@@ -30,7 +30,7 @@ class App extends Component {
           <Route
             path="/profile"
             render={props =>
-              this.props.isAuthenticated ? (
+              this.auth.isAuthenticated ? (
                 <Profile auth={this.auth} {...props} />
               ) : (
                 <Redirect to="/" />
