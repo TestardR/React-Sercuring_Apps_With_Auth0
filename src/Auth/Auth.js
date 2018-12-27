@@ -9,6 +9,8 @@ export default class Auth {
       domain: process.env.REACT_APP_AUTH0_DOMAIN,
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
       redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
+      // links to the API Identifier we set in general settings of Auth0
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       responseType: 'token id_token',
       // id_token: Gives us a JWT token to authenticate the user when they login in
       // token : Gives us an access token so the user can make API calls
