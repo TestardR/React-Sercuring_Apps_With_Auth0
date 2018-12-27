@@ -66,6 +66,7 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('scopes');
     this.userProfile = null;
     this.auth0.logout({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
@@ -88,4 +89,11 @@ export default class Auth {
       cb(profile, err);
     });
   };
+
+  userHasScopes(scopes) {
+    const grantedScopes = (
+      JSON.parse(localStorage.getItem('scopes')) || ''
+    ).split(' ');
+    return scopes.every(scope => grantedScopes.includes(scope));
+  }
 }
