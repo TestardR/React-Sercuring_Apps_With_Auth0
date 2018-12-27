@@ -7,6 +7,7 @@ import Auth from './Auth/Auth';
 import Callback from './Callback';
 import Public from './Public';
 import Private from './Private';
+import Courses from './Courses';
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component {
           <Route
             path="/profile"
             render={props =>
-              this.auth.isAuthenticated ? (
+              this.auth.isAuthenticated() ? (
                 <Profile auth={this.auth} {...props} />
               ) : (
                 <Redirect to="/" />
@@ -42,7 +43,26 @@ class App extends Component {
           <Route path="/public" component={Public} />
           <Route
             path="/private"
-            render={props => <Private auth={this.auth} {...props} />}
+            render={props =>
+              this.auth.isAuthenticated() ? (
+                <Private auth={this.auth} {...props} />
+              ) : (
+                this.auth.login()
+              )
+            }
+          />
+          <Route
+            path="/courses"
+            render={props =>
+              // these checks are merely for user experience, not security.
+              // It's the server's job to validate the user is authorized when an API call is made
+              this.auth.isAuthenticated() &&
+              this.auth.userHasScopes(['read:courses']) ? (
+                <Courses auth={this.auth} {...props} />
+              ) : (
+                this.auth.login()
+              )
+            }
           />
         </div>
       </>

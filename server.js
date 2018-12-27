@@ -38,7 +38,7 @@ app.get('/private', checkJwt, function(req, res) {
   });
 });
 
-app.get('/courses', checkJwt, checkScope(['read:courses']), function(req, res) {
+app.get('/course', checkJwt, checkScope(['read:courses']), function(req, res) {
   res.json({
     // In the real world, it would read the sub (subscriber ID) from the access token and use it to query
     // the database for the author's courses.
