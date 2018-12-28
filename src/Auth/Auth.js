@@ -1,5 +1,7 @@
 import auth0 from 'auth0-js';
 
+const REDIRECT_ON_LOGIN = 'redirect_on_login';
+
 export default class Auth {
   // We pass React Router's history in, so Auth can perform redirects
   constructor(history) {
@@ -20,6 +22,10 @@ export default class Auth {
   }
 
   login = () => {
+    localStorage.setItem(
+      REDIRECT_ON_LOGIN,
+      JSON.stringify(this.history.location)
+    );
     this.auth0.authorize(); // This will redirect the browser to the Auth0 login page
   };
 
@@ -29,12 +35,17 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         // we write the data to our session
         this.setSession(authResult);
-        this.history.push('/');
+        const redirectLocation =
+          localStorage.getItem(REDIRECT_ON_LOGIN) === 'undefined'
+            ? '/'
+            : JSON.parse(localStorage.getItem(REDIRECT_ON_LOGIN));
+        this.history.push(redirectLocation);
       } else if (err) {
         this.history.push('/');
         alert(`Error: ${err.error}. Check the console for further details.`);
         console.log(err);
       }
+      localStorage.removeItem(REDIRECT_ON_LOGIN);
     });
   };
 
