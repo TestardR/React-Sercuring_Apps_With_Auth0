@@ -15,12 +15,21 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: new Auth(this.props.history) // as index.js is wrapped, the history object is available to react-router. We pass history so that Auth can interact with react-router
+      auth: new Auth(this.props.history), // as index.js is wrapped, the history object is available to react-router. We pass history so that Auth can interact with react-router
+      tokenRenewalComplete: false
     };
+  }
+
+  componentDidMount() {
+    this.state.auth.renewToken(() =>
+      this.setState({ tokenRenewalComplete: true })
+    );
   }
 
   render() {
     const { auth } = this.state;
+    // show loading message until the token renewal check is completed.
+    if (!this.state.tokenRenewalComplete) return 'Loading...';
     return (
       // Child components can access the auth object by importing AuthContext.Consumer
       <AuthContext.Provider value={auth}>
