@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Home from './Home';
 import Profile from './Profile';
 import Nav from './Nav';
@@ -37,15 +37,14 @@ class App extends Component {
             render={props => <Callback auth={auth} {...props} />}
           />
           {/*We pass the auth object down to each component on props for now.*/}
-          <PrivateRoute path="/profile" component={Profile} auth={auth} />
+          <PrivateRoute path="/profile" component={Profile} />
           <Route path="/public" component={Public} />
-          <PrivateRoute path="/private" component={Private} auth={auth} />
+          <PrivateRoute path="/private" component={Private} />
           <PrivateRoute
             path="/courses"
             component={Courses}
             // these checks are merely for user experience, not security.
             // It's the server's job to validate the user is authorized when an API call is made
-            auth={auth}
             scopes={['read:courses']}
           />
         </div>
