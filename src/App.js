@@ -8,6 +8,7 @@ import Callback from './Callback';
 import Public from './Public';
 import Private from './Private';
 import Courses from './Courses';
+import PrivateRoute from './PrivateRoute';
 
 class App extends Component {
   constructor(props) {
@@ -30,39 +31,16 @@ class App extends Component {
             render={props => <Callback auth={this.auth} {...props} />}
           />
           {/*We pass the auth object down to each component on props for now.*/}
-          <Route
-            path="/profile"
-            render={props =>
-              this.auth.isAuthenticated() ? (
-                <Profile auth={this.auth} {...props} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
+          <PrivateRoute path="/profile" component={Profile} auth={this.auth} />
           <Route path="/public" component={Public} />
-          <Route
-            path="/private"
-            render={props =>
-              this.auth.isAuthenticated() ? (
-                <Private auth={this.auth} {...props} />
-              ) : (
-                this.auth.login()
-              )
-            }
-          />
-          <Route
+          <PrivateRoute path="/private" component={Private} auth={this.auth} />
+          <PrivateRoute
             path="/courses"
-            render={props =>
-              // these checks are merely for user experience, not security.
-              // It's the server's job to validate the user is authorized when an API call is made
-              this.auth.isAuthenticated() &&
-              this.auth.userHasScopes(['read:courses']) ? (
-                <Courses auth={this.auth} {...props} />
-              ) : (
-                this.auth.login()
-              )
-            }
+            component={Courses}
+            // these checks are merely for user experience, not security.
+            // It's the server's job to validate the user is authorized when an API call is made
+            auth={this.auth}
+            scopes={['read:courses']}
           />
         </div>
       </>
