@@ -18,7 +18,7 @@ export default class Auth {
     this.auth0 = new auth0.WebAuth({
       domain: process.env.REACT_APP_AUTH0_DOMAIN,
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
+      redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL_PROD,
       // links to the API Identifier we set in general settings of Auth0
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       responseType: 'token id_token',
@@ -79,7 +79,7 @@ export default class Auth {
   logout = () => {
     this.auth0.logout({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      returnTo: 'http://localhost:3000'
+      returnTo: 'https://fierce-badlands-16138.herokuapp.com'
     });
   };
 
